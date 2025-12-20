@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.gestionetudiants.controller.PersonnelController"
+      spacing="10"
+      style="-fx-padding: 20;">
+
+    <Label text="Gestion du Personnel"
+           style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <VBox spacing="10" prefWidth="350">
+            <Label text="Informations du personnel"
+                   style="-fx-font-weight: bold;"/>
+
+            <GridPane hgap="10" vgap="10">
+                <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="txtNom" promptText="Nom du personnel"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           prefWidth="200"/>
+            </GridPane>
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="➕ Ajouter" onAction="#handleAdd"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                <Button text="✏️ Modifier" onAction="#handleUpdate"
+                        style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+                <Button text="🗑️ Supprimer" onAction="#handleDelete"
+                        style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+                <Button text="🔄 Effacer" onAction="#handleClear"/>
+            </HBox>
+        </VBox>
+
+        <Separator orientation="VERTICAL"/>
+
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="Liste du personnel"
+                   style="-fx-font-weight: bold;"/>
+            <TableView fx:id="personnelTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="150"/>
+                    <TableColumn fx:id="colNom" text="Nom" prefWidth="450"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </HBox>
+</VBox>

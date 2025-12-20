@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.gestionetudiants.controller.MainController"
+            fx:id="mainBorderPane"
+            prefHeight="700.0"
+            prefWidth="1000.0">
+
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="Fichier">
+                    <MenuItem text="Quitter" onAction="#handleExit"/>
+                </Menu>
+                <Menu text="Aide">
+                    <MenuItem text="À propos" onAction="#handleAbout"/>
+                </Menu>
+            </MenuBar>
+
+            <HBox spacing="10" alignment="CENTER_LEFT"
+                  style="-fx-background-color: #2196F3; -fx-padding: 15;">
+                <Button text="📚 Étudiants" onAction="#handleStudents"
+                        style="-fx-background-color: white; -fx-text-fill: #2196F3; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                <Button text="🏫 Classes" onAction="#handleClassrooms"
+                        style="-fx-background-color: white; -fx-text-fill: #2196F3; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                <Button text="📝 Inscriptions" onAction="#handleEnrollments"
+                        style="-fx-background-color: white; -fx-text-fill: #2196F3; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                <Button text="👥 Personnel" onAction="#handlePersonnel"
+                        style="-fx-background-color: white; -fx-text-fill: #2196F3; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <Label text="Bienvenue dans le système de gestion des étudiants"
+                   style="-fx-font-size: 24; -fx-text-fill: #666;"/>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER"
+              style="-fx-background-color: #f5f5f5; -fx-padding: 10;">
+            <Label text="Systeme"
+                   style="-fx-text-fill: #666;"/>
+        </HBox>
+    </bottom>
+</BorderPane>

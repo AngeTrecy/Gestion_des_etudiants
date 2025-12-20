@@ -1,29 +1,28 @@
 package com.example.gestionetudiants.DAO;
 
-import com.example.gestionetudiants.model.Classroom;
+import com.example.gestionetudiants.model.Personnel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassroomDAO {
+public class PersonnelDAO {
     private Connection c;
 
-    public ClassroomDAO() {
+    public PersonnelDAO() {
         this.c = DatabaseConnection.getConnection();
     }
 
-    public boolean insert(Classroom classroom) {
-        String sql = "INSERT INTO classroom(nom, niveau) VALUES(?, ?)";
+    public boolean insert(Personnel personnel) {
+        String sql = "INSERT INTO personnel(nom) VALUES(?)";
         try (PreparedStatement statement = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, classroom.getNom());
-            statement.setString(2, classroom.getNiveau());
+            statement.setString(1, personnel.getNom());
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 ResultSet rs = statement.getGeneratedKeys();
                 if (rs.next()) {
                     int generatedId = rs.getInt(1);
-                    classroom.setId(generatedId);
+                    personnel.setId(generatedId);
                 }
             }
             return rowsInserted > 0;
@@ -34,7 +33,7 @@ public class ClassroomDAO {
     }
 
     public boolean delete(int id) {
-        String sql = "DELETE FROM classroom WHERE id = ?";
+        String sql = "DELETE FROM personnel WHERE id = ?";
         try (PreparedStatement statement = c.prepareStatement(sql)) {
             statement.setInt(1, id);
             int rowsDeleted = statement.executeUpdate();
@@ -45,12 +44,11 @@ public class ClassroomDAO {
         }
     }
 
-    public boolean update(Classroom classroom) {
-        String sql = "UPDATE classroom SET nom = ?, niveau = ? WHERE id = ?";
+    public boolean update(Personnel personnel) {
+        String sql = "UPDATE personnel SET nom = ? WHERE id = ?";
         try (PreparedStatement statement = c.prepareStatement(sql)) {
-            statement.setString(1, classroom.getNom());
-            statement.setString(2, classroom.getNiveau());
-            statement.setInt(3, classroom.getId());
+            statement.setString(1, personnel.getNom());
+            statement.setInt(2, personnel.getId());
 
             int rowsUpdated = statement.executeUpdate();
             return rowsUpdated > 0;
@@ -60,38 +58,36 @@ public class ClassroomDAO {
         }
     }
 
-    public List<Classroom> selectAll() {
-        List<Classroom> classrooms = new ArrayList<>();
-        String sql = "SELECT * FROM classroom";
+    public List<Personnel> selectAll() {
+        List<Personnel> personnelList = new ArrayList<>();
+        String sql = "SELECT * FROM personnel";
 
         try (Statement statement = c.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                Classroom classroom = new Classroom(
+                Personnel personnel = new Personnel(
                         rs.getInt("id"),
-                        rs.getString("nom"),
-                        rs.getString("niveau")
+                        rs.getString("nom")
                 );
-                classrooms.add(classroom);
+                personnelList.add(personnel);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return classrooms;
+        return personnelList;
     }
 
-    public Classroom selectById(int id) {
-        String sql = "SELECT * FROM classroom WHERE id = ?";
+    public Personnel selectById(int id) {
+        String sql = "SELECT * FROM personnel WHERE id = ?";
         try (PreparedStatement statement = c.prepareStatement(sql)) {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                return new Classroom(
+                return new Personnel(
                         rs.getInt("id"),
-                        rs.getString("nom"),
-                        rs.getString("niveau")
+                        rs.getString("nom")
                 );
             }
         } catch (SQLException e) {

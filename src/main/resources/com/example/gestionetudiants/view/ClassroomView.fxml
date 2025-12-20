@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.gestionetudiants.controller.ClassroomController"
+      spacing="10"
+      style="-fx-padding: 20;">
+
+    <Label text="Gestion des Classes"
+           style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <VBox spacing="10" prefWidth="350">
+            <Label text="Informations de la classe"
+                   style="-fx-font-weight: bold;"/>
+
+            <GridPane hgap="10" vgap="10">
+                <Label text="Nom de la classe:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="txtNom" promptText="Ex: 6ème A"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           prefWidth="200"/>
+
+                <Label text="Niveau:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtNiveau" promptText="Ex: Collège"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            </GridPane>
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="➕ Ajouter" onAction="#handleAdd"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                <Button text="✏️ Modifier" onAction="#handleUpdate"
+                        style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+                <Button text="🗑️ Supprimer" onAction="#handleDelete"
+                        style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+                <Button text="🔄 Effacer" onAction="#handleClear"/>
+            </HBox>
+        </VBox>
+
+        <Separator orientation="VERTICAL"/>
+
+        <VBox HBox.hgrow="ALWAYS">
+            <Label text="Liste des classes"
+                   style="-fx-font-weight: bold;"/>
+            <TableView fx:id="classroomTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="100"/>
+                    <TableColumn fx:id="colNom" text="Nom de la classe" prefWidth="250"/>
+                    <TableColumn fx:id="colNiveau" text="Niveau" prefWidth="250"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </HBox>
+</VBox>
