@@ -99,4 +99,9 @@ public class ClassroomController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    private void handleClear() {
+        clearFields();
+    }
 }

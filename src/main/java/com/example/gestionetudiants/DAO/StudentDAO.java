@@ -13,28 +13,47 @@ public class StudentDAO {
     }
 
     public boolean insert(Student student) {
-        String sql = "INSERT INTO student(nom, prenom, date_naissance, email, sexe) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement statement = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, student.getNom());
-            statement.setString(2, student.getPrenom());
+        String sql = "INSERT INTO student(id, nom, prenom, date_naissance, email, sexe) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement statement = c.prepareStatement(sql)) {
+            // Générer un ID si nécessaire
+            if (student.getId() == null || student.getId().isEmpty()) {
+                student.setId(generateUniqueId());
+            }
+
+            statement.setString(1, student.getId());
+            statement.setString(2, student.getNom());
+            statement.setString(3, student.getPrenom());
             java.sql.Date sqlDate = new java.sql.Date(student.getDate_naissance().getTime());
-            statement.setDate(3, sqlDate);
-            statement.setString(4, student.getEmail());
-            statement.setString(5, student.getSexe());
+            statement.setDate(4, sqlDate);
+            statement.setString(5, student.getEmail());
+            statement.setString(6, student.getSexe());
 
             int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                ResultSet rs = statement.getGeneratedKeys();
-                if (rs.next()) {
-                    String generatedId = rs.getString(1);
-                    student.setId(generatedId);
-                }
-            }
             return rowsInserted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // Méthode pour générer un ID unique de 7 caractères (format: année + 3 chiffres)
+    private String generateUniqueId() {
+        int currentYear = java.time.Year.now().getValue();
+        String yearPrefix = String.valueOf(currentYear);
+
+        String sql = "SELECT MAX(CAST(SUBSTRING(id, 5) AS UNSIGNED)) FROM student WHERE id LIKE ?";
+        try (PreparedStatement statement = c.prepareStatement(sql)) {
+            statement.setString(1, yearPrefix + "%");
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int maxNum = rs.getInt(1);
+                return String.format("%d%03d", currentYear, maxNum + 1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return yearPrefix + "001";
     }
 
     public boolean delete(String id) {

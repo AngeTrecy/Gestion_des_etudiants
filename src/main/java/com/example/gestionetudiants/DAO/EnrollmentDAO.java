@@ -78,17 +78,8 @@ public class EnrollmentDAO {
              ResultSet rs = statement.executeQuery(sql)) {
 
             while (rs.next()) {
-                Student student = studentDAO.selectById(rs.getString("student_id"));
-                Classroom classroom = classroomDAO.selectById(rs.getInt("classroom_id"));
-
-                if (student != null && classroom != null) {
-                    Enrollment enrollment = new Enrollment(
-                            rs.getInt("id"),
-                            student,
-                            classroom,
-                            rs.getInt("year"),
-                            rs.getDate("date_inscription").toLocalDate()
-                    );
+                Enrollment enrollment = createEnrollmentFromResultSet(rs);
+                if (enrollment != null) {
                     enrollments.add(enrollment);
                 }
             }
@@ -105,18 +96,7 @@ public class EnrollmentDAO {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                Student student = studentDAO.selectById(rs.getString("student_id"));
-                Classroom classroom = classroomDAO.selectById(rs.getInt("classroom_id"));
-
-                if (student != null && classroom != null) {
-                    return new Enrollment(
-                            rs.getInt("id"),
-                            student,
-                            classroom,
-                            rs.getInt("year"),
-                            rs.getDate("date_inscription").toLocalDate()
-                    );
-                }
+                return createEnrollmentFromResultSet(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,17 +113,8 @@ public class EnrollmentDAO {
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
-                Student student = studentDAO.selectById(rs.getString("student_id"));
-                Classroom classroom = classroomDAO.selectById(rs.getInt("classroom_id"));
-
-                if (student != null && classroom != null) {
-                    Enrollment enrollment = new Enrollment(
-                            rs.getInt("id"),
-                            student,
-                            classroom,
-                            rs.getInt("year"),
-                            rs.getDate("date_inscription").toLocalDate()
-                    );
+                Enrollment enrollment = createEnrollmentFromResultSet(rs);
+                if (enrollment != null) {
                     enrollments.add(enrollment);
                 }
             }
@@ -151,5 +122,46 @@ public class EnrollmentDAO {
             e.printStackTrace();
         }
         return enrollments;
+    }
+
+    public List<Enrollment> searchByStudentName(String name) {
+        List<Enrollment> enrollments = new ArrayList<>();
+        String sql = "SELECT e.* FROM enrollment e " +
+                "INNER JOIN student s ON e.student_id = s.id " +
+                "WHERE s.nom LIKE ? OR s.prenom LIKE ?";
+
+        try (PreparedStatement statement = c.prepareStatement(sql)) {
+            String searchPattern = "%" + name + "%";
+            statement.setString(1, searchPattern);
+            statement.setString(2, searchPattern);
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Enrollment enrollment = createEnrollmentFromResultSet(rs);
+                if (enrollment != null) {
+                    enrollments.add(enrollment);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return enrollments;
+    }
+
+    // MÉTHODE HELPER POUR CRÉER UN ENROLLMENT DEPUIS UN RESULTSET
+    private Enrollment createEnrollmentFromResultSet(ResultSet rs) throws SQLException {
+        Student student = studentDAO.selectById(rs.getString("student_id"));
+        Classroom classroom = classroomDAO.selectById(rs.getInt("classroom_id"));
+
+        if (student != null && classroom != null) {
+            return new Enrollment(
+                    rs.getInt("id"),
+                    student,
+                    classroom,
+                    rs.getInt("year"),
+                    rs.getDate("date_inscription").toLocalDate()
+            );
+        }
+        return null;
     }
 }

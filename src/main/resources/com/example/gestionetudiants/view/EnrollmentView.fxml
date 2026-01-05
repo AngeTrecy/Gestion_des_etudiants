@@ -9,69 +9,64 @@
       spacing="10"
       style="-fx-padding: 20;">
 
-    <Label text="Gestion des Étudiants"
+    <Label text="Gestion des Inscriptions"
            style="-fx-font-size: 24; -fx-font-weight: bold;"/>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Label text="Rechercher:"/>
-        <TextField fx:id="txtSearch" promptText="Nom ou prénom..." prefWidth="300"/>
+        <TextField fx:id="txtSearch" promptText="Nom d'étudiant..." prefWidth="300"/>
         <Button text="🔍 Rechercher" onAction="#handleSearch"/>
+        <Button text="🔄 Effacer" onAction="#handleClear"/>
     </HBox>
 
     <Separator/>
 
     <HBox spacing="20" VBox.vgrow="ALWAYS">
         <VBox spacing="10" prefWidth="350">
-            <Label text="Informations de l'étudiant"
+            <Label text="Informations de l'inscription"
                    style="-fx-font-weight: bold;"/>
 
             <GridPane hgap="10" vgap="10">
-                <Label text="Nom:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <TextField fx:id="txtNom" promptText="Nom"
-                           GridPane.columnIndex="1" GridPane.rowIndex="0"
-                           prefWidth="200"/>
+                <Label text="Étudiant:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <ComboBox fx:id="cbStudent" promptText="Sélectionner un étudiant"
+                          GridPane.columnIndex="1" GridPane.rowIndex="0"
+                          prefWidth="200"/>
 
-                <Label text="Prénom:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <TextField fx:id="txtPrenom" promptText="Prénom"
-                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="Classe:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="cbClassroom" promptText="Sélectionner une classe"
+                          GridPane.columnIndex="1" GridPane.rowIndex="1"
+                          prefWidth="200"/>
 
-                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <TextField fx:id="txtEmail" promptText="email@example.com"
+                <Label text="Année:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="txtYear" promptText="Ex: 2024"
                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                <Label text="Date de naissance:"
+                <Label text="Date d'inscription:"
                        GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                <DatePicker fx:id="dateNaissance"
+                <DatePicker fx:id="dateInscription"
                             GridPane.columnIndex="1" GridPane.rowIndex="3"
                             prefWidth="200"/>
-
-                <Label text="Sexe:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                <ComboBox fx:id="cbSexe" promptText="Sélectionner"
-                          GridPane.columnIndex="1" GridPane.rowIndex="4"
-                          prefWidth="200"/>
             </GridPane>
 
             <HBox spacing="10" alignment="CENTER">
                 <Button text="➕ Ajouter" onAction="#handleAdd"/>
                 <Button text="✏️ Modifier" onAction="#handleUpdate"/>
                 <Button text="🗑️ Supprimer" onAction="#handleDelete"/>
-                <Button text="🔄 Effacer" onAction="#handleClear"/>
             </HBox>
         </VBox>
 
         <Separator orientation="VERTICAL"/>
 
         <VBox HBox.hgrow="ALWAYS">
-            <Label text="Liste des étudiants"
+            <Label text="Liste des inscriptions"
                    style="-fx-font-weight: bold;"/>
-            <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
+            <TableView fx:id="enrollmentTable" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID" prefWidth="80"/>
-                    <TableColumn fx:id="colNom" text="Nom" prefWidth="120"/>
-                    <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
-                    <TableColumn fx:id="colEmail" text="Email" prefWidth="180"/>
-                    <TableColumn fx:id="colDateNaissance" text="Date Naissance" prefWidth="120"/>
-                    <TableColumn fx:id="colSexe" text="Sexe" prefWidth="60"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colStudent" text="Étudiant" prefWidth="200"/>
+                    <TableColumn fx:id="colClassroom" text="Classe" prefWidth="150"/>
+                    <TableColumn fx:id="colYear" text="Année" prefWidth="100"/>
+                    <TableColumn fx:id="colDateInscription" text="Date d'inscription" prefWidth="150"/>
                 </columns>
             </TableView>
         </VBox>
